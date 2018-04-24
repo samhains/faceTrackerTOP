@@ -40,7 +40,7 @@ void MultiFaceTracker::update() {
 			targetPointsArr[i] = targetPoints;
 			targetMesh.update_vertices(targetPointsArr[i]);
 			targetMesh.update_uvs(srcPoints);
-			targetMesh.draw();
+			renderer->draw(targetMesh, OF_MESH_FILL);
 		}
 		maskFbo.end();
 		srcFbo.begin();
@@ -53,8 +53,7 @@ void MultiFaceTracker::update() {
 			targetPointsArr[i] = targetPoints;
 			targetMesh.update_vertices(targetPointsArr[i]);
 			targetMesh.update_uvs(srcPoints);
-
-			targetMesh.draw();
+			renderer->draw(targetMesh,OF_MESH_FILL);
 			src.unbind();
 		}
 		srcFbo.end();
@@ -82,11 +81,9 @@ void MultiFaceTracker::draw() {
 }
 
 void MultiFaceTracker::loadFace(string face) {
-	ofLog(OF_LOG_NOTICE, "loading" + ofToString(face));
 	src.loadImage(face);
 	if (src.getWidth() > 0) {
 		while (srcPoints.size() == 0) {
-			ofLog(OF_LOG_NOTICE, "trying" + ofToString(face));
 
 			srcTracker.update(toCv(src));
 			vector<ofxFaceTracker2Instance>  instances = srcTracker.getInstances();
