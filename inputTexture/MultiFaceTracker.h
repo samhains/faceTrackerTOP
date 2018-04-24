@@ -9,6 +9,7 @@
 class MultiFaceTracker {
 public:
 	ofTexture texture;
+	ofTexture MultiFaceTracker::getTexture();
 	void setup(ofFbo::Settings _settings, shared_ptr<ofGLProgrammableRenderer> _renderer);
 	void update();
 	void draw();
