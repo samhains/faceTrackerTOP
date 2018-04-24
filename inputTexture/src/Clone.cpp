@@ -109,6 +109,6 @@ void Clone::update(ofTexture& src, ofTexture& dst, ofTexture& mask) {
 	buffer.end();
 }
 
-ofTexture Clone::draw(float x, float y) {
+ofTexture Clone::getTexture() {
 	return buffer.getTexture();
 }
