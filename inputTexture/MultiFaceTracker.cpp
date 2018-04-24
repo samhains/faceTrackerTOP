@@ -23,6 +23,8 @@ void MultiFaceTracker::setup(ofFbo::Settings _settings, shared_ptr<ofGLProgramma
 	if (faces.size() != 0) {
 		loadFace(faces.getPath(0));
 	}
+	targetVideoPlayer.update();
+	texture = targetVideoPlayer.getTexture();
 }
 void MultiFaceTracker::update() {
 	targetVideoPlayer.update();
@@ -65,10 +67,6 @@ void MultiFaceTracker::update() {
 		clone.update(srcFbo.getTextureReference(), targetVideoPlayer.getTextureReference(), maskFbo.getTextureReference());
 
 	}
-}
-
-void MultiFaceTracker::draw() {
-	ofSetColor(255);
 
 	if (src.getWidth() > 0) {
 		texture = clone.draw(0, 0);
@@ -76,6 +74,23 @@ void MultiFaceTracker::draw() {
 	else {
 		texture = targetVideoPlayer.getTexture();
 	}
+
+}
+
+ofTexture MultiFaceTracker::getTexture() {
+	return texture;
+}
+
+void MultiFaceTracker::draw() {
+	//ofSetColor(255);
+
+	if (src.getWidth() > 0) {
+		texture = clone.draw(0, 0);
+	}
+	else {
+		texture = targetVideoPlayer.getTexture();
+	}
+
 
 
 }
