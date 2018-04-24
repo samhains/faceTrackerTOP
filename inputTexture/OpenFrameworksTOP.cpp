@@ -78,19 +78,6 @@ void OpenFrameworksTOP::setup()
 	settings.internalformat = GL_RGBA;
 	fbo.allocate(settings);
 
-#ifdef TARGET_OPENGLES
-	shader.load("shadersES2/shader");
-#else
-
-	if (ofIsGLProgrammableRenderer())
-	{
-		shader.load("shadersGL3/shader");
-	}
-	else
-	{
-		shader.load("shadersGL2/shader");
-	}
-#endif
 
 	isSetup = true;
 }
@@ -119,7 +106,6 @@ OpenFrameworksTOP::begin()
 {
 	renderer->startRender();
 	renderer->setupScreen();
-	//renderer->bind(shader);
 	renderer->pushMatrix();
 }
 
@@ -127,7 +113,6 @@ void
 OpenFrameworksTOP::end()
 {
 	renderer->popMatrix();
-	//renderer->unbind(shader);
 	renderer->finishRender();
 }
 
@@ -161,7 +146,6 @@ OpenFrameworksTOP::execute(const TOP_OutputFormatSpecs* outputFormat,
 	context->beginGLCommands();
 	targetVideoPlayer.update();
 
-	// shaders must be loaded within the TouchDesigner context
 	if (!isSetup)
 	{
 		setup();
@@ -178,7 +162,6 @@ OpenFrameworksTOP::execute(const TOP_OutputFormatSpecs* outputFormat,
 
 	begin();
 
-	//shader.setUniform1f("xPos", (float)-xPos);
 	renderer->draw(t, 0, 0, 0, 1280, 720, 0, 0, 1280, 720);
 
 	end();
