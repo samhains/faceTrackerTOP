@@ -76,6 +76,7 @@ void OpenFrameworksTOP::setup()
 	settings.height = 720;
 	settings.numSamples = 0;
 	settings.internalformat = GL_RGBA;
+	faceTracker.setup(settings, renderer);
 	fbo.allocate(settings);
 
 
