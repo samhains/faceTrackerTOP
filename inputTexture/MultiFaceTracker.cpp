@@ -35,7 +35,7 @@ void MultiFaceTracker::update() {
 		vector<ofxFaceTracker2Instance> instances = targetTracker.getInstances();
 		vector<vector<ofVec2f>> targetPointsArr(instances.size());
 		maskFbo.begin();
-		ofClear(0, 255);
+		renderer->clear();
 		for (int i = 0; i < instances.size(); i++) {
 			ofxFaceTracker2Instance camTarget = instances[i];
 			std::vector<ofVec2f> targetPoints = camTarget.getLandmarks().getImagePoints();
@@ -46,30 +46,26 @@ void MultiFaceTracker::update() {
 		}
 		maskFbo.end();
 		srcFbo.begin();
-		ofClear(0, 255);
+		renderer->clear();
 
 		for (int i = 0; i < instances.size(); i++) {
-			src.bind();
+			renderer->bind(src.getTexture(), 0);
 			ofxFaceTracker2Instance camTarget = instances[i];
 			std::vector<ofVec2f> targetPoints = camTarget.getLandmarks().getImagePoints();
 			targetPointsArr[i] = targetPoints;
 			targetMesh.update_vertices(targetPointsArr[i]);
 			targetMesh.update_uvs(srcPoints);
 			renderer->draw(targetMesh,OF_MESH_FILL);
-			src.unbind();
+			renderer->unbind(src.getTexture(), 0);
 		}
 		srcFbo.end();
 
-
-
-
 		clone.setStrength(16);
 		clone.update(srcFbo.getTextureReference(), targetVideoPlayer.getTextureReference(), maskFbo.getTextureReference());
-
 	}
 
 	if (src.getWidth() > 0) {
-		texture = clone.draw(0, 0);
+		texture = clone.getTexture();
 	}
 	else {
 		texture = targetVideoPlayer.getTexture();
@@ -79,20 +75,6 @@ void MultiFaceTracker::update() {
 
 ofTexture MultiFaceTracker::getTexture() {
 	return texture;
-}
-
-void MultiFaceTracker::draw() {
-	//ofSetColor(255);
-
-	if (src.getWidth() > 0) {
-		texture = clone.draw(0, 0);
-	}
-	else {
-		texture = targetVideoPlayer.getTexture();
-	}
-
-
-
 }
 
 void MultiFaceTracker::loadFace(string face) {

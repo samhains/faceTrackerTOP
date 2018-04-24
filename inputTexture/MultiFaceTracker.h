@@ -12,7 +12,6 @@ public:
 	ofTexture MultiFaceTracker::getTexture();
 	void setup(ofFbo::Settings _settings, shared_ptr<ofGLProgrammableRenderer> _renderer);
 	void update();
-	void draw();
 private:
 	void loadFace(string face);
 	ofFbo::Settings settings;
