@@ -3,3 +3,4 @@ inputTexture/obj/*
 obj/*
 *.obj
 *.tlog
+*.dll
