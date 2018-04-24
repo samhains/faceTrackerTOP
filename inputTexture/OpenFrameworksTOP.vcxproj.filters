@@ -116,4 +116,9 @@
       <UniqueIdentifier>{b35b7e35-599f-4500-887b-ea3ea8571365}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
+  <ItemGroup>
+    <Text Include="Notes.txt">
+      <Filter>src</Filter>
+    </Text>
+  </ItemGroup>
 </Project>

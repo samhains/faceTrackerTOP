@@ -145,25 +145,19 @@ OpenFrameworksTOP::execute(const TOP_OutputFormatSpecs* outputFormat,
 	ofSetupOpenGL(&myWindow, width, height, OF_WINDOW);
 
 	context->beginGLCommands();
-	targetVideoPlayer.update();
 
 	if (!isSetup)
 	{
 		setup();
 	}
-	texture = targetVideoPlayer.getTexture();
-
-	fbo.begin();
-	renderer->draw(texture, 0, 0, 0, 1280, 720, 0, 0, 1280, 720);
-	fbo.end();
-
-	auto t = fbo.getTexture();
+	faceTracker.update();
+	texture = faceTracker.getTexture();
 
 	glBindFramebuffer(GL_FRAMEBUFFER, context->getFBOIndex());
 
 	begin();
 
-	renderer->draw(t, 0, 0, 0, 1280, 720, 0, 0, 1280, 720);
+	renderer->draw(texture, 0, 0, 0, 1280, 720, 0, 0, 1280, 720);
 
 	end();
 
