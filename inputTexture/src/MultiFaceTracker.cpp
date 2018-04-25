@@ -28,10 +28,8 @@ void MultiFaceTracker::setup(ofFbo::Settings _settings, shared_ptr<ofGLProgramma
 
 }
 void MultiFaceTracker::update() {;
-	std::cout << "UPDATING\n";
 if (src.isAllocated()) {
 
-	std::cout << "we in the src bit\n";
 	targetVideoPlayer.update();
 
 	if (targetVideoPlayer.isFrameNew()) {
@@ -39,13 +37,11 @@ if (src.isAllocated()) {
 
 		vector<ofxFaceTracker2Instance> instances = targetTracker.getInstances();
 		vector<vector<ofVec2f>> targetPointsArr(instances.size());
-		std::cout << "found " << ofToString(instances.size());
 		maskFbo.begin();
 		renderer->clear(0, 255);
 		for (int i = 0; i < instances.size(); i++) {
 			ofxFaceTracker2Instance camTarget = instances[i];
 			std::vector<ofVec2f> targetPoints = camTarget.getLandmarks().getImagePoints();
-			std::cout << "getting target pts\n";
 			targetPointsArr[i] = targetPoints;
 			targetMesh.update_vertices(targetPointsArr[i]);
 			targetMesh.update_uvs(srcPoints);
@@ -56,10 +52,7 @@ if (src.isAllocated()) {
 		srcFbo.begin();
 		renderer->clear(0, 255);
 
-		std::cout << "2nd for loop\n";
 		for (int i = 0; i < instances.size(); i++) {
-			src.bind();
-			std::cout << "binding src\n";
 			renderer->bind(src.getTexture(), 0);
 			ofxFaceTracker2Instance camTarget = instances[i];
 			std::vector<ofVec2f> targetPoints = camTarget.getLandmarks().getImagePoints();
