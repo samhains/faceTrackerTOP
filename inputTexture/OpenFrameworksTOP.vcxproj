@@ -244,6 +244,12 @@
   <ItemGroup>
     <Text Include="Notes.txt" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="bin\data\cloneShader\shader.frag" />
+    <None Include="bin\data\cloneShader\shader.vert" />
+    <None Include="bin\data\maskBlur\shader.frag" />
+    <None Include="bin\data\maskBlur\shader.vert" />
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ProjectExtensions>
     <VisualStudio>

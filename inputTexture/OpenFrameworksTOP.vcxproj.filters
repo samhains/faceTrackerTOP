@@ -115,10 +115,33 @@
     <Filter Include="addons">
       <UniqueIdentifier>{b35b7e35-599f-4500-887b-ea3ea8571365}</UniqueIdentifier>
     </Filter>
+    <Filter Include="shaders">
+      <UniqueIdentifier>{fa2fb6eb-323a-46bf-9b46-c2bbea4b73eb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="shaders\maskBlur">
+      <UniqueIdentifier>{0082b398-d5a9-4de5-a234-f1c477787f68}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="shaders\cloneMask">
+      <UniqueIdentifier>{7bd38faf-7fb5-4026-84c1-f908e1904b96}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <Text Include="Notes.txt">
       <Filter>src</Filter>
     </Text>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="bin\data\maskBlur\shader.frag">
+      <Filter>shaders\maskBlur</Filter>
+    </None>
+    <None Include="bin\data\cloneShader\shader.frag">
+      <Filter>shaders\cloneMask</Filter>
+    </None>
+    <None Include="bin\data\cloneShader\shader.vert">
+      <Filter>shaders\cloneMask</Filter>
+    </None>
+    <None Include="bin\data\maskBlur\shader.vert">
+      <Filter>shaders\maskBlur</Filter>
+    </None>
   </ItemGroup>
 </Project>
