@@ -100,7 +100,6 @@ void MultiFaceTracker::loadFace(string face) {
 		srcTracker.update(toCv(src));
 
 		vector<ofxFaceTracker2Instance>  instances = srcTracker.getInstances();
-		std::cout << "isntances" << instances.size();
 
 		if (instances.size() > 0) {
 			ofxFaceTracker2Instance instance = instances[0];
