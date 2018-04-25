@@ -150,9 +150,5 @@ void TargetMesh::update_uvs(const std::vector<ofVec2f> &points){
     for(std::vector<ofVec2f>::const_iterator it = points.begin(); it != points.end(); ++it){
         addTexCoord(*it);
     }
-}
-
-void TargetMesh::render(){
     framesUnseen += 1;
-    draw();
 }
