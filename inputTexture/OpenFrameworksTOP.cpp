@@ -115,7 +115,6 @@ OpenFrameworksTOP::end()
 {
 	renderer->popMatrix();
 	renderer->finishRender();
-	faceTracker.stop();
 }
 
 void
