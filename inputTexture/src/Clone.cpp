@@ -51,12 +51,12 @@ void Clone::setup(int width, int height, ofFbo::Settings settings, shared_ptr<of
 	
 	// this might be a problem
 	//solution - shader.load("shadersGL2/shader");
-	maskBlurShader.load(maskBlurShaderSource);
-	cloneShader.load(cloneShaderSource);
-	//maskBlurShader.setupShaderFromSource(GL_FRAGMENT_SHADER, maskBlurShaderSource);
-	//cloneShader.setupShaderFromSource(GL_FRAGMENT_SHADER, cloneShaderSource);
-	//maskBlurShader.linkProgram();
-	//cloneShader.linkProgram();
+	//maskBlurShader.load(maskBlurShaderSource);
+	//cloneShader.load(cloneShaderSource);
+	maskBlurShader.setupShaderFromSource(GL_FRAGMENT_SHADER, maskBlurShaderSource);
+	cloneShader.setupShaderFromSource(GL_FRAGMENT_SHADER, cloneShaderSource);
+	maskBlurShader.linkProgram();
+	cloneShader.linkProgram();
 	
 	strength = 0;
 }
