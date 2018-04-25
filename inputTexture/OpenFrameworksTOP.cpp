@@ -61,6 +61,7 @@ OpenFrameworksTOP::OpenFrameworksTOP(const OP_NodeInfo* info) : myNodeInfo(info)
 
 OpenFrameworksTOP::~OpenFrameworksTOP()
 {
+	faceTracker.stop();
 	//delete renderer;
 }
 void OpenFrameworksTOP::setup()
@@ -77,7 +78,6 @@ void OpenFrameworksTOP::setup()
 	settings.numSamples = 0;
 	settings.internalformat = GL_RGBA;
 	faceTracker.setup(settings, renderer);
-	fbo.allocate(settings);
 
 
 	isSetup = true;
@@ -115,6 +115,7 @@ OpenFrameworksTOP::end()
 {
 	renderer->popMatrix();
 	renderer->finishRender();
+	faceTracker.stop();
 }
 
 void
@@ -145,7 +146,6 @@ OpenFrameworksTOP::execute(const TOP_OutputFormatSpecs* outputFormat,
 	ofSetupOpenGL(&myWindow, width, height, OF_WINDOW);
 
 	context->beginGLCommands();
-
 	if (!isSetup)
 	{
 		setup();

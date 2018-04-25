@@ -36,8 +36,6 @@ private:
 
 	ofShader 			shader;
 	ofPlanePrimitive 	plane;
-	ofFbo fbo;
-	ofFbo fbo2;
     ofImage 			img;
 	shared_ptr<ofGLProgrammableRenderer> renderer;
 	ofVideoPlayer targetVideoPlayer;
