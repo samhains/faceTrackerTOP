@@ -212,10 +212,10 @@
     <ClInclude Include="..\..\..\addons\ofxFaceTracker2\src\ofxFaceTracker2Landmarks.h" />
     <ClInclude Include="CPlusPlus_Common.h" />
     <ClInclude Include="Header.h" />
-    <ClInclude Include="MultiFaceTracker.h" />
     <ClInclude Include="OpenFrameworksTOP.h" />
     <ClInclude Include="src\Clone.h" />
     <ClInclude Include="src\Coord.h" />
+    <ClInclude Include="src\MultiFaceTracker.h" />
     <ClInclude Include="src\TargetMesh.h" />
     <ClInclude Include="TOP_CPlusPlusBase.h" />
   </ItemGroup>
@@ -236,9 +236,9 @@
     <ClCompile Include="..\..\..\addons\ofxFaceTracker2\src\ofxFaceTracker2.cpp" />
     <ClCompile Include="..\..\..\addons\ofxFaceTracker2\src\ofxFaceTracker2Instance.cpp" />
     <ClCompile Include="..\..\..\addons\ofxFaceTracker2\src\ofxFaceTracker2Landmarks.cpp" />
-    <ClCompile Include="MultiFaceTracker.cpp" />
     <ClCompile Include="OpenFrameworksTOP.cpp" />
     <ClCompile Include="src\Clone.cpp" />
+    <ClCompile Include="src\MultiFaceTracker.cpp" />
     <ClCompile Include="src\TargetMesh.cpp" />
   </ItemGroup>
   <ItemGroup>

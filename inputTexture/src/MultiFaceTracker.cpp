@@ -95,13 +95,18 @@ void MultiFaceTracker::loadFace(string face) {
 	src.load(face);
 
 	if (src.getWidth() > 0) {
-			srcTracker.update(toCv(src));
-			vector<ofxFaceTracker2Instance>  instances = srcTracker.getInstances();
-			if (instances.size() > 0) {
-				ofxFaceTracker2Instance instance = instances[0];
-				srcPoints = instance.getLandmarks().getImagePoints();
-				targetMesh.update_uvs(srcPoints);
-			}
+		srcTracker.update(toCv(src));
+		Sleep(1000);
+		srcTracker.update(toCv(src));
+
+		vector<ofxFaceTracker2Instance>  instances = srcTracker.getInstances();
+		std::cout << "isntances" << instances.size();
+
+		if (instances.size() > 0) {
+			ofxFaceTracker2Instance instance = instances[0];
+			srcPoints = instance.getLandmarks().getImagePoints();
+			targetMesh.update_uvs(srcPoints);
+		}
 	}
 	else {
 		std::cout << "NOT ALLOCATEED\n";

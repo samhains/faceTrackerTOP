@@ -56,7 +56,7 @@
     <ClCompile Include="..\..\..\addons\ofxCv\libs\ofxCv\src\ContourFinder.cpp">
       <Filter>addons</Filter>
     </ClCompile>
-    <ClCompile Include="MultiFaceTracker.cpp">
+    <ClCompile Include="src\MultiFaceTracker.cpp">
       <Filter>src</Filter>
     </ClCompile>
   </ItemGroup>
@@ -101,7 +101,7 @@
     <ClInclude Include="..\..\..\addons\ofxCv\libs\CLD\include\CLD\myvec.h">
       <Filter>addons</Filter>
     </ClInclude>
-    <ClInclude Include="MultiFaceTracker.h">
+    <ClInclude Include="src\MultiFaceTracker.h">
       <Filter>src</Filter>
     </ClInclude>
   </ItemGroup>
