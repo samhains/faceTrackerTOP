@@ -116,29 +116,32 @@ OpenFrameworksTOP::end()
 	renderer->popMatrix();
 	renderer->finishRender();
 }
+void OpenFrameworksTOP::setTexturesFromInput(OP_Inputs* inputs) {
+
+	double xPos = inputs->getParDouble("Translation");
+	const OP_TOPInput *topInput = inputs->getInputTOP(0);
+	bgTexture.setUseExternalTextureID(topInput->textureIndex);
+	bgTexture.texData.width = topInput->width;
+	bgTexture.texData.height = topInput->height;
+	bgTexture.texData.tex_w = topInput->width;
+	bgTexture.texData.tex_h = topInput->height;
+	bgTexture.texData.tex_t = 1.0f;
+	bgTexture.texData.tex_u = 1.0f;
+	bgTexture.texData.textureTarget = topInput->textureType;
+	bgTexture.texData.bFlipTexture = true;
+}
 
 void
 OpenFrameworksTOP::execute(const TOP_OutputFormatSpecs* outputFormat,
 	OP_Inputs* inputs,
 	TOP_Context *context)
 {
-	double xPos = inputs->getParDouble("Translation");
 
 	int width = outputFormat->width;
 	int height = outputFormat->height;
+	setTexturesFromInput(inputs);
 
 	// Use the first input TOP (here we assume it exists but in reality it might not)
-	const OP_TOPInput *topInput = inputs->getInputTOP(0);
-	ofTexture texture;
-	texture.setUseExternalTextureID(topInput->textureIndex);
-	texture.texData.width = topInput->width;
-	texture.texData.height = topInput->height;
-	texture.texData.tex_w = topInput->width;
-	texture.texData.tex_h = topInput->height;
-	texture.texData.tex_t = 1.0f;
-	texture.texData.tex_u = 1.0f;
-	texture.texData.textureTarget = topInput->textureType;
-	texture.texData.bFlipTexture = true;
 
 	// Need to use a ofAppNoWindow so that openFrameworks doesn't create a conflicting
 	// OpenGL context. We want to use TouchDesigner's context in ::execute
@@ -149,7 +152,7 @@ OpenFrameworksTOP::execute(const TOP_OutputFormatSpecs* outputFormat,
 	{
 		setup();
 	}
-	faceTracker.update();
+	faceTracker.update(bgTexture);
 	texture = faceTracker.getTexture();
 
 	glBindFramebuffer(GL_FRAMEBUFFER, context->getFBOIndex());

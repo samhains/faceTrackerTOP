@@ -22,8 +22,12 @@ public:
 
 	virtual void 		setupParameters(OP_ParameterManager* manager) override;
 
+	void OpenFrameworksTOP::setTexturesFromInput(OP_Inputs* inputs);
 private:
 
+	ofTexture bgTexture;
+	ofTexture faceTexture;
+	ofTexture texture;
 	void				begin();
 	void				end();
 

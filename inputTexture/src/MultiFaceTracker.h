@@ -11,10 +11,11 @@ public:
 	ofTexture texture;
 	ofTexture MultiFaceTracker::getTexture();
 	void setup(ofFbo::Settings _settings, shared_ptr<ofGLProgrammableRenderer> _renderer);
-	void update();
+	void update(ofTexture bgTexture);
 	void stop();
 private:
 	void loadFace(string face);
+	ofImage bgImg;
 	ofFbo::Settings settings;
 	ofVideoPlayer targetVideoPlayer;
 	ofxFaceTracker2 srcTracker;
