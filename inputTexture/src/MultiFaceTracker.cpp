@@ -40,8 +40,8 @@ if (src.isAllocated()) {
 		//bgTexture
 
 
-		targetTracker.update(toCv(pixels));
 		pixels.mirror(true, false);
+		targetTracker.update(toCv(pixels));
 		//targetTracker.update(toCv(targetVideoPlayer));
 
 		vector<ofxFaceTracker2Instance> instances = targetTracker.getInstances();
