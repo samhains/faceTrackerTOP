@@ -33,7 +33,6 @@ if (src.isAllocated()) {
 	//if (targetVideoPlayer.isFrameNew()) {
 		//ofPixels pixels;
 		bgTexture.readToPixels(pixels);
-		//pixels.mirror(true, false);
 
 		//ofLoadImage(bgTexture, "path");
 		//renderer->bind(img);

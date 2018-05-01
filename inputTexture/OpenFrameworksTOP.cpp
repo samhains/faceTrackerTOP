@@ -67,6 +67,7 @@ OpenFrameworksTOP::~OpenFrameworksTOP()
 void OpenFrameworksTOP::setup()
 {
 	glewInit();
+	ofDisableArbTex();
 	renderer->setup(3, 2);
 	targetVideoPlayer.load("movies/cut2.mp4");
 	targetVideoPlayer.play();
@@ -77,6 +78,7 @@ void OpenFrameworksTOP::setup()
 	settings.height = 720;
 	settings.numSamples = 0;
 	settings.internalformat = GL_RGBA;
+	settings.textureTarget = GL_TEXTURE_2D;
 	faceTracker.setup(settings, renderer, faceTexture);
 
 
