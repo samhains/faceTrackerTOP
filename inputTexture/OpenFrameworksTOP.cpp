@@ -77,7 +77,7 @@ void OpenFrameworksTOP::setup()
 	settings.height = 720;
 	settings.numSamples = 0;
 	settings.internalformat = GL_RGBA;
-	faceTracker.setup(settings, renderer);
+	faceTracker.setup(settings, renderer, faceTexture);
 
 
 	isSetup = true;
@@ -118,7 +118,6 @@ OpenFrameworksTOP::end()
 }
 void OpenFrameworksTOP::setTexturesFromInput(OP_Inputs* inputs) {
 
-	double xPos = inputs->getParDouble("Translation");
 	const OP_TOPInput *topInput = inputs->getInputTOP(0);
 	bgTexture.setUseExternalTextureID(topInput->textureIndex);
 	bgTexture.texData.width = topInput->width;
@@ -129,6 +128,19 @@ void OpenFrameworksTOP::setTexturesFromInput(OP_Inputs* inputs) {
 	bgTexture.texData.tex_u = 1.0f;
 	bgTexture.texData.textureTarget = topInput->textureType;
 	bgTexture.texData.bFlipTexture = true;
+	ofTexture texture3;
+
+	const OP_TOPInput *topInput2 = inputs->getInputTOP(1);
+	faceTexture.setUseExternalTextureID(topInput2->textureIndex);
+	faceTexture.texData.width = topInput2->width;
+	faceTexture.texData.height = topInput2->height;
+	faceTexture.texData.tex_w = topInput2->width;
+	faceTexture.texData.tex_h = topInput2->height;
+	faceTexture.texData.tex_t = 1.0f;
+	faceTexture.texData.tex_u = 1.0f;
+	faceTexture.texData.textureTarget = topInput2->textureType;
+	faceTexture.texData.bFlipTexture = true;
+
 }
 
 void

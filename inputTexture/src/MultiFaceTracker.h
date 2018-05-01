@@ -10,13 +10,16 @@ class MultiFaceTracker {
 public:
 	ofTexture texture;
 	ofTexture MultiFaceTracker::getTexture();
-	void setup(ofFbo::Settings _settings, shared_ptr<ofGLProgrammableRenderer> _renderer);
+	void setup(ofFbo::Settings _settings, shared_ptr<ofGLProgrammableRenderer> _renderer, ofTexture faceTexture);
 	void update(ofTexture bgTexture);
 	void stop();
 private:
 	void loadFace(string face);
+	void loadFace(ofTexture faceTexture);
 	ofImage bgImg;
 	ofFbo::Settings settings;
+	ofPixels pixels;
+	ofTexture tex2;
 	ofVideoPlayer targetVideoPlayer;
 	ofxFaceTracker2 srcTracker;
 	ofxFaceTracker2 targetTracker;
