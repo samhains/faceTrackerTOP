@@ -29,10 +29,10 @@ void MultiFaceTracker::setup(ofFbo::Settings _settings, shared_ptr<ofGLProgramma
 }
 void MultiFaceTracker::update(ofTexture bgTexture) {;
 if (src.isAllocated()) {
-	//targetVideoPlayer.update();
-	//if (targetVideoPlayer.isFrameNew()) {
+	targetVideoPlayer.update();
+	if (targetVideoPlayer.isFrameNew()) {
 		//ofPixels pixels;
-		bgTexture.readToPixels(pixels);
+		//bgTexture.readToPixels(pixels);
 		//pixels.mirror(true, false);
 
 		//ofLoadImage(bgTexture, "path");
@@ -40,8 +40,8 @@ if (src.isAllocated()) {
 		//bgTexture
 
 
-		targetTracker.update(toCv(pixels));
-		//targetTracker.update(toCv(targetVideoPlayer));
+		//targetTracker.update(toCv(pixels));
+		targetTracker.update(toCv(targetVideoPlayer));
 
 		vector<ofxFaceTracker2Instance> instances = targetTracker.getInstances();
 		vector<vector<ofVec2f>> targetPointsArr(instances.size());
@@ -73,16 +73,16 @@ if (src.isAllocated()) {
 		}
 		srcFbo.end();
 		clone.setStrength(16);
-		clone.update(srcFbo.getTextureReference(), bgTexture, maskFbo.getTextureReference());
-		//clone.update(srcFbo.getTextureReference(), targetVideoPlayer.getTextureReference(), maskFbo.getTextureReference());
+		//clone.update(srcFbo.getTextureReference(), bgTexture, maskFbo.getTextureReference());
+		clone.update(srcFbo.getTextureReference(), targetVideoPlayer.getTextureReference(), maskFbo.getTextureReference());
 
-		//}
+		}
 
 		if (src.getWidth() > 0) {
 			texture = clone.getTexture();
 		}
 		else {
-			texture = bgTexture;
+			texture = targetVideoPlayer.getTextureReference();
 		}
 	}
 else {
