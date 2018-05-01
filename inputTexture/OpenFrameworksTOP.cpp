@@ -68,7 +68,7 @@ void OpenFrameworksTOP::setup()
 {
 	glewInit();
 	renderer->setup(3, 2);
-	targetVideoPlayer.load("movies/cut.mp4");
+	targetVideoPlayer.load("movies/cut2.mp4");
 	targetVideoPlayer.play();
 	targetVideoPlayer.setVolume(0);
 
