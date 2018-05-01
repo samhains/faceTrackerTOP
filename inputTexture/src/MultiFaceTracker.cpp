@@ -8,9 +8,9 @@ void MultiFaceTracker::setup(ofFbo::Settings _settings, shared_ptr<ofGLProgramma
 	renderer = _renderer;
 	//ofSetVerticalSync(true);
 	clone.setup(1280, 720, settings, renderer);
-	//targetVideoPlayer.load("movies/cut.mp4");
-	//targetVideoPlayer.play();
-	//targetVideoPlayer.setVolume(0);
+	targetVideoPlayer.load("movies/cut2.mp4");
+	targetVideoPlayer.play();
+	targetVideoPlayer.setVolume(0);
 
 	targetTracker.setup();
 	srcTracker.setup();
@@ -29,6 +29,8 @@ void MultiFaceTracker::setup(ofFbo::Settings _settings, shared_ptr<ofGLProgramma
 }
 void MultiFaceTracker::update(ofTexture bgTexture) {;
 if (src.isAllocated()) {
+	//targetVideoPlayer.update();
+	//if (targetVideoPlayer.isFrameNew()) {
 		//ofPixels pixels;
 		bgTexture.readToPixels(pixels);
 		//pixels.mirror(true, false);
@@ -39,6 +41,7 @@ if (src.isAllocated()) {
 
 
 		targetTracker.update(toCv(pixels));
+		//targetTracker.update(toCv(targetVideoPlayer));
 
 		vector<ofxFaceTracker2Instance> instances = targetTracker.getInstances();
 		vector<vector<ofVec2f>> targetPointsArr(instances.size());
@@ -65,22 +68,23 @@ if (src.isAllocated()) {
 			targetPointsArr[i] = targetPoints;
 			targetMesh.update_vertices(targetPointsArr[i]);
 			targetMesh.update_uvs(srcPoints);
-			renderer->draw(targetMesh,OF_MESH_FILL);
+			renderer->draw(targetMesh, OF_MESH_FILL);
 			renderer->unbind(src.getTexture(), 0);
 		}
 		srcFbo.end();
-		ofEnableArbTex();
 		clone.setStrength(16);
 		clone.update(srcFbo.getTextureReference(), bgTexture, maskFbo.getTextureReference());
+		//clone.update(srcFbo.getTextureReference(), targetVideoPlayer.getTextureReference(), maskFbo.getTextureReference());
 
+		//}
 
-	if (src.getWidth() > 0) {
-		texture = clone.getTexture();
+		if (src.getWidth() > 0) {
+			texture = clone.getTexture();
+		}
+		else {
+			texture = bgTexture;
+		}
 	}
-	else {
-		texture = bgTexture;
-	}
-}
 else {
 	std::cout << "NOT ALLOCATEED\n";
 }
