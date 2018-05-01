@@ -43,7 +43,7 @@ void Clone::setStrength(int strength) {
 
 void Clone::update(ofTexture& src, ofTexture& dst, ofTexture& mask) {
 	//maskedBlur(src, mask, srcBlur);
-	//maskedBlur(dst, mask, dstBlur);
+	maskedBlur(dst, mask, dstBlur);
 	//
 	//buffer.begin();
 	//renderer->pushStyle();
