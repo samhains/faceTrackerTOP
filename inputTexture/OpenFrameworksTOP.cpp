@@ -64,6 +64,7 @@ OpenFrameworksTOP::~OpenFrameworksTOP()
 	faceTracker.stop();
 	//delete renderer;
 }
+
 void OpenFrameworksTOP::setup()
 {
 	glewInit();
@@ -140,6 +141,7 @@ void OpenFrameworksTOP::setTexturesFromInput(OP_Inputs* inputs) {
 	faceTexture.texData.tex_u = 1.0f;
 	faceTexture.texData.textureTarget = topInput2->textureType;
 	faceTexture.texData.bFlipTexture = true;
+
 
 }
 

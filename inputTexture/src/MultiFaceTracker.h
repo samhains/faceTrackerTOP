@@ -14,8 +14,8 @@ public:
 	void update(ofTexture bgTexture);
 	void stop();
 private:
-	void loadFace(string face);
 	void loadFace(ofTexture faceTexture);
+	bool faceDetected = false;
 	ofImage bgImg;
 	ofFbo::Settings settings;
 	ofPixels pixels;
@@ -23,7 +23,7 @@ private:
 	ofVideoPlayer targetVideoPlayer;
 	ofxFaceTracker2 srcTracker;
 	ofxFaceTracker2 targetTracker;
-	ofImage src;
+	ofTexture faceTex;
 	TargetMesh targetMesh;
 	vector<ofVec2f> srcPoints;
 	shared_ptr<ofGLProgrammableRenderer> renderer;
