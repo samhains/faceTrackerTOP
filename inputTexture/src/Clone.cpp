@@ -74,24 +74,19 @@ void Clone::update(ofTexture& src, ofTexture& dst, ofTexture& mask) {
 	maskedBlurNormalizedSrc(dst, mask, dstBlur);
 
 
-	//buffer.begin();
-	////renderer->bind(maskBlurShader);
-	//renderer->draw(dst, 0, 0, 0, 1280, 720, 0, 0, 1280, 720);
-	//buffer.end();
-
 	
-	//buffer.begin();
-	//renderer->pushStyle();
-	//renderer->setBlendMode(OF_BLENDMODE_ALPHA);
-	//renderer->bind(cloneShader);
-	//	cloneShader.setUniformTexture("src", src, 1);
-	//	//cloneShader.setUniformTexture("srcBlur", srcBlur, 2);
-	//	//cloneShader.setUniformTexture("dstBlur", dstBlur, 3);
-	//	renderer->draw(src, 0, 0, 0, 1280, 720, 0, 0, 1280, 720);
-	//renderer->unbind(cloneShader);
-	//renderer->setBlendMode(OF_BLENDMODE_DISABLED);
-	//renderer->popStyle();
-	//buffer.end();
+	buffer.begin();
+	renderer->pushStyle();
+	renderer->setBlendMode(OF_BLENDMODE_ALPHA);
+	renderer->bind(cloneShader);
+		cloneShader.setUniformTexture("src", src, 1);
+		cloneShader.setUniformTexture("srcBlur", srcBlur, 2);
+		cloneShader.setUniformTexture("dstBlur", dstBlur, 3);
+		renderer->draw(src, 0, 0, 0, 1280, 720, 0, 0, 1280, 720);
+	renderer->unbind(cloneShader);
+	renderer->setBlendMode(OF_BLENDMODE_DISABLED);
+	renderer->popStyle();
+	buffer.end();
 }
 
 ofTexture Clone::getTexture() {
