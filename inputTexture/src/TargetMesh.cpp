@@ -147,14 +147,11 @@ void TargetMesh::update_vertices(const std::vector<ofVec2f> &points){
 
 void TargetMesh::update_uvs(const std::vector<ofVec2f> &points){
     clearTexCoords();
-	//ofVec2f v1;
     for(std::vector<ofVec2f>::const_iterator it = points.begin(); it != points.end(); ++it){
 		// mangle coord it[1]
 		// good coord [0]
-		//v1.set(it[0][0], it[0][1]);
-		//ofLog(OF_LOG_NOTICE, "ADDING POS" + ofToString(it[0][0]/1280.0) + " ");
-        addTexCoord(*it);
-		//ofLog(OF_LOG_NOTICE, "ADDING POS" + ofToString(it[0]) + " " + ofToString());
+		normalizedCoord.set(it[0][0]/1280.0, 1.0 - it[0][1]/720.0);
+        addTexCoord(normalizedCoord);
     }
     framesUnseen += 1;
 }

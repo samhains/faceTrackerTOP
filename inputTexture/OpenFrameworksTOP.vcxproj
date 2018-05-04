@@ -247,12 +247,12 @@
   <ItemGroup>
     <None Include="bin\data\cloneShader\shader.frag" />
     <None Include="bin\data\cloneShader\shader.vert" />
-    <None Include="bin\data\debug\shader.frag" />
-    <None Include="bin\data\debug\shader.vert" />
     <None Include="bin\data\maskBlur2\shader.frag" />
     <None Include="bin\data\maskBlur2\shader.vert" />
     <None Include="bin\data\maskBlur\shader.frag" />
     <None Include="bin\data\maskBlur\shader.vert" />
+    <None Include="bin\data\simpleMask\shader.frag" />
+    <None Include="bin\data\simpleMask\shader.vert" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ProjectExtensions>

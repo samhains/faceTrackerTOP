@@ -13,8 +13,10 @@ public:
 	shared_ptr<ofGLProgrammableRenderer> renderer;
 protected:
 	void maskedBlur(ofTexture& tex, ofTexture& mask, ofFbo& result);
+	void simpleMask(ofTexture& tex, ofTexture& mask, ofTexture& dst);
 	void maskedBlurNormalizedSrc(ofTexture& tex, ofTexture& mask, ofFbo& result);
 	ofFbo buffer, srcBlur, dstBlur;
-	ofShader maskBlurShader, maskBlurShader2, debug, cloneShader;
+	ofShader maskBlurShader, maskBlurShader2, simpleMaskShader, cloneShader;
 	int strength;
+	bool toggleBlur = false;
 };

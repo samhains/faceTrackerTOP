@@ -8,12 +8,28 @@ void Clone::setup(int width, int height, ofFbo::Settings settings, shared_ptr<of
 	dstBlur.allocate(settings);
 	maskBlurShader.load("maskBlur/shader");
 	maskBlurShader2.load("maskBlur2/shader");
-	debug.load("debug/shader");
+	simpleMaskShader.load("simpleMask/shader");
 	cloneShader.load("cloneShader/shader");
 	
 	strength = 0;
 }
 
+void Clone::simpleMask(ofTexture& tex, ofTexture& mask, ofTexture& dst) {
+	
+	buffer.begin();
+	renderer->pushStyle();
+	renderer->setBlendMode(OF_BLENDMODE_ALPHA);
+	renderer->bind(simpleMaskShader);
+	simpleMaskShader.setUniformTexture("src", tex, 1);
+	simpleMaskShader.setUniformTexture("mask", mask, 2);
+	simpleMaskShader.setUniformTexture("dstBlur", dst, 3);
+	renderer->draw(tex, 0, 0, 0, 1280, 720, 0, 0, 1280, 720);
+	renderer->unbind(simpleMaskShader);
+	renderer->setBlendMode(OF_BLENDMODE_DISABLED);
+	renderer->popStyle();
+	buffer.end();
+	
+}
 void Clone::maskedBlur(ofTexture& tex, ofTexture& mask, ofFbo& result) {
 	int k = strength;
 	
@@ -70,19 +86,25 @@ void Clone::setStrength(int strength) {
 }
 
 void Clone::update(ofTexture& src, ofTexture& dst, ofTexture& mask) {
-	maskedBlur(src, mask, srcBlur);
-	maskedBlurNormalizedSrc(dst, mask, dstBlur);
+	//maskedBlur(src, mask, srcBlur);
+	//maskedBlurNormalizedSrc(dst, mask, dstBlur);
+	if (toggleBlur) {
+		maskedBlur(src, mask, srcBlur);
+		maskedBlurNormalizedSrc(dst, mask, dstBlur);
+	}
+	else {
+		simpleMask(src, mask, dst);
+	}
 
 
-	
 	buffer.begin();
 	renderer->pushStyle();
 	renderer->setBlendMode(OF_BLENDMODE_ALPHA);
 	renderer->bind(cloneShader);
-		cloneShader.setUniformTexture("src", src, 1);
-		cloneShader.setUniformTexture("srcBlur", srcBlur, 2);
-		cloneShader.setUniformTexture("dstBlur", dstBlur, 3);
-		renderer->draw(src, 0, 0, 0, 1280, 720, 0, 0, 1280, 720);
+	cloneShader.setUniformTexture("src", src, 1);
+	cloneShader.setUniformTexture("srcBlur", srcBlur, 2);
+	cloneShader.setUniformTexture("dstBlur", dstBlur, 3);
+	renderer->draw(src, 0, 0, 0, 1280, 720, 0, 0, 1280, 720);
 	renderer->unbind(cloneShader);
 	renderer->setBlendMode(OF_BLENDMODE_DISABLED);
 	renderer->popStyle();

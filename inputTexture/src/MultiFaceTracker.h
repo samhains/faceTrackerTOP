@@ -10,25 +10,25 @@ class MultiFaceTracker {
 public:
 	ofTexture texture;
 	ofTexture MultiFaceTracker::getTexture();
-	void setup(ofFbo::Settings _settings, shared_ptr<ofGLProgrammableRenderer> _renderer, ofTexture faceTexture);
+	void setup(ofFbo::Settings _settings, shared_ptr<ofGLProgrammableRenderer> _renderer, ofTexture _faceTexture);
 	void update(ofTexture bgTexture);
 	void stop();
+	ofTexture faceTexture;
 private:
-	void loadFace(ofTexture faceTexture);
+	void loadFace();
 	bool faceDetected = false;
 	ofImage bgImg;
+	ofImage faceAlphaImg;
 	ofFbo::Settings settings;
 	ofPixels pixels;
-	ofTexture tex2;
 	ofVideoPlayer targetVideoPlayer;
 	ofxFaceTracker2 srcTracker;
 	ofxFaceTracker2 targetTracker;
-	ofTexture faceTex;
 	TargetMesh targetMesh;
 	vector<ofVec2f> srcPoints;
 	shared_ptr<ofGLProgrammableRenderer> renderer;
 	Clone clone;
-	ofFbo srcFbo, maskFbo;
+	ofFbo srcFbo, maskFbo, simpleFbo;
 
 	ofDirectory faces;
 };

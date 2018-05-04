@@ -130,6 +130,9 @@
     <Filter Include="shaders\debug">
       <UniqueIdentifier>{9a06a4f1-361b-40c3-bf3f-0912e86fb4f2}</UniqueIdentifier>
     </Filter>
+    <Filter Include="shaders\simpleMask">
+      <UniqueIdentifier>{7eec72c5-a6b2-4a01-905b-a03620258049}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <Text Include="Notes.txt">
@@ -155,11 +158,11 @@
     <None Include="bin\data\maskBlur2\shader.frag">
       <Filter>shaders\maskBlur2</Filter>
     </None>
-    <None Include="bin\data\debug\shader.vert">
-      <Filter>shaders\debug</Filter>
+    <None Include="bin\data\simpleMask\shader.frag">
+      <Filter>shaders\simpleMask</Filter>
     </None>
-    <None Include="bin\data\debug\shader.frag">
-      <Filter>shaders\debug</Filter>
+    <None Include="bin\data\simpleMask\shader.vert">
+      <Filter>shaders\simpleMask</Filter>
     </None>
   </ItemGroup>
 </Project>

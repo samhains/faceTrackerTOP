@@ -3,16 +3,18 @@
 using namespace ofxCv;
 
 
-void MultiFaceTracker::setup(ofFbo::Settings _settings, shared_ptr<ofGLProgrammableRenderer> _renderer, ofTexture faceTexture) {
+void MultiFaceTracker::setup(ofFbo::Settings _settings, shared_ptr<ofGLProgrammableRenderer> _renderer, ofTexture _faceTexture) {
 	settings = _settings;
 	renderer = _renderer;
+	faceTexture = _faceTexture;
 	//ofSetVerticalSync(true);
 	clone.setup(1280, 720, settings, renderer);
 	targetTracker.setup();
 	srcTracker.setup();
 	maskFbo.allocate(settings);
 	srcFbo.allocate(settings);
-	loadFace(faceTexture);
+	simpleFbo.allocate(settings);
+	loadFace();
 
 }
 void MultiFaceTracker::update(ofTexture bgTexture) {;
@@ -23,7 +25,6 @@ if (faceDetected) {
 	pixels.mirror(true, false);
 
 	targetTracker.update(toCv(pixels));
-	//targetTracker.update(toCv(targetVideoPlayer));
 
 	vector<ofxFaceTracker2Instance> instances = targetTracker.getInstances();
 	vector<vector<ofVec2f>> targetPointsArr(instances.size());
@@ -44,17 +45,19 @@ if (faceDetected) {
 	renderer->clear(0, 255);
 
 	for (int i = 0; i < instances.size(); i++) {
-		renderer->bind(faceTex, 0);
+		renderer->bind(faceTexture, 0);
 		ofxFaceTracker2Instance camTarget = instances[i];
 		std::vector<ofVec2f> targetPoints = camTarget.getLandmarks().getImagePoints();
 		targetPointsArr[i] = targetPoints;
 		targetMesh.update_vertices(targetPointsArr[i]);
 		targetMesh.update_uvs(srcPoints);
 		renderer->draw(targetMesh, OF_MESH_FILL);
-		renderer->unbind(faceTex, 0);
+		renderer->unbind(faceTexture, 0);
 	}
 	srcFbo.end();
-	clone.setStrength(16);
+
+
+	clone.setStrength(14);
 	clone.update(srcFbo.getTextureReference(), bgTexture, maskFbo.getTextureReference());
 	texture = clone.getTexture();
 }
@@ -65,7 +68,6 @@ else {
 
 }
 
-
 ofTexture MultiFaceTracker::getTexture() {
 	return texture;
 }
@@ -74,15 +76,12 @@ void MultiFaceTracker::stop() {
 	targetTracker.stop();
 }
 
-void MultiFaceTracker::loadFace(ofTexture faceTexture) {
+void MultiFaceTracker::loadFace() {
 	// how to load toCv compatible from texture instead of string
 
 	ofPixels facePixels;
 	faceTexture.readToPixels(facePixels);
 	facePixels.mirror(true, false);
-	ofImage image;
-	image.setFromPixels(facePixels);
-	faceTex = image.getTextureReference();
 
 
 	if (facePixels.getWidth() > 0) {
