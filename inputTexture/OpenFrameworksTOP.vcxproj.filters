@@ -118,11 +118,17 @@
     <Filter Include="shaders">
       <UniqueIdentifier>{fa2fb6eb-323a-46bf-9b46-c2bbea4b73eb}</UniqueIdentifier>
     </Filter>
+    <Filter Include="shaders\cloneMask">
+      <UniqueIdentifier>{7bd38faf-7fb5-4026-84c1-f908e1904b96}</UniqueIdentifier>
+    </Filter>
     <Filter Include="shaders\maskBlur">
       <UniqueIdentifier>{0082b398-d5a9-4de5-a234-f1c477787f68}</UniqueIdentifier>
     </Filter>
-    <Filter Include="shaders\cloneMask">
-      <UniqueIdentifier>{7bd38faf-7fb5-4026-84c1-f908e1904b96}</UniqueIdentifier>
+    <Filter Include="shaders\maskBlur2">
+      <UniqueIdentifier>{4c6e6aca-504b-474e-9f8d-f519fd37ee27}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="shaders\debug">
+      <UniqueIdentifier>{9a06a4f1-361b-40c3-bf3f-0912e86fb4f2}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -142,6 +148,18 @@
     </None>
     <None Include="bin\data\maskBlur\shader.vert">
       <Filter>shaders\maskBlur</Filter>
+    </None>
+    <None Include="bin\data\maskBlur2\shader.vert">
+      <Filter>shaders\maskBlur2</Filter>
+    </None>
+    <None Include="bin\data\maskBlur2\shader.frag">
+      <Filter>shaders\maskBlur2</Filter>
+    </None>
+    <None Include="bin\data\debug\shader.vert">
+      <Filter>shaders\debug</Filter>
+    </None>
+    <None Include="bin\data\debug\shader.frag">
+      <Filter>shaders\debug</Filter>
     </None>
   </ItemGroup>
 </Project>

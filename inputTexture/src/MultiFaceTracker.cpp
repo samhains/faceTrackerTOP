@@ -31,17 +31,17 @@ void MultiFaceTracker::update(ofTexture bgTexture) {;
 if (src.isAllocated()) {
 	targetVideoPlayer.update();
 	if (targetVideoPlayer.isFrameNew()) {
-		//ofPixels pixels;
-		//bgTexture.readToPixels(pixels);
-		//pixels.mirror(true, false);
+		ofPixels pixels;
+		bgTexture.readToPixels(pixels);
+		pixels.mirror(true, false);
 
 		//ofLoadImage(bgTexture, "path");
 		//renderer->bind(img);
 		//bgTexture
 
 
-		//targetTracker.update(toCv(pixels));
-		targetTracker.update(toCv(targetVideoPlayer));
+		targetTracker.update(toCv(pixels));
+		//targetTracker.update(toCv(targetVideoPlayer));
 
 		vector<ofxFaceTracker2Instance> instances = targetTracker.getInstances();
 		vector<vector<ofVec2f>> targetPointsArr(instances.size());
@@ -73,8 +73,8 @@ if (src.isAllocated()) {
 		}
 		srcFbo.end();
 		clone.setStrength(16);
-		//clone.update(srcFbo.getTextureReference(), bgTexture, maskFbo.getTextureReference());
-		clone.update(srcFbo.getTextureReference(), targetVideoPlayer.getTextureReference(), maskFbo.getTextureReference());
+		clone.update(srcFbo.getTextureReference(), bgTexture, maskFbo.getTextureReference());
+		//clone.update(srcFbo.getTextureReference(), targetVideoPlayer.getTextureReference(), maskFbo.getTextureReference());
 
 		}
 
