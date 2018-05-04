@@ -44,6 +44,7 @@ if (src.isAllocated()) {
 		//targetTracker.update(toCv(targetVideoPlayer));
 
 		vector<ofxFaceTracker2Instance> instances = targetTracker.getInstances();
+		ofLog(OF_LOG_NOTICE, ofToString(instances.size()));
 		vector<vector<ofVec2f>> targetPointsArr(instances.size());
 		ofDisableArbTex();
 		maskFbo.begin();

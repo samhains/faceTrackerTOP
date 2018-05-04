@@ -52,16 +52,16 @@ void Clone::maskedBlurNormalizedSrc(ofTexture& tex, ofTexture& mask, ofFbo& resu
 	renderer->unbind(maskBlurShader2);
 	buffer.end();
 	
-	//result.begin();
-	//renderer->bind(maskBlurShader);
-	//maskBlurShader.setUniformTexture("tex", buffer, 1);
-	//maskBlurShader.setUniformTexture("mask", mask, 2);
-	//maskBlurShader.setUniform2f("direction", 0, 1);
-	//maskBlurShader.setUniform1i("k", k);
-	//bufferTexture = buffer.getTexture();
-	//renderer->draw(bufferTexture, 0, 0, 0, 1280, 720, 0, 0, 1280, 720);
-	//renderer->unbind(maskBlurShader);
-	//result.end();
+	result.begin();
+	renderer->bind(maskBlurShader);
+	maskBlurShader.setUniformTexture("tex", buffer, 1);
+	maskBlurShader.setUniformTexture("mask", mask, 2);
+	maskBlurShader.setUniform2f("direction", 0, 1);
+	maskBlurShader.setUniform1i("k", k);
+	bufferTexture = buffer.getTexture();
+	renderer->draw(bufferTexture, 0, 0, 0, 1280, 720, 0, 0, 1280, 720);
+	renderer->unbind(maskBlurShader);
+	result.end();
 }
 
 void Clone::setStrength(int strength) {
@@ -72,7 +72,6 @@ void Clone::update(ofTexture& src, ofTexture& dst, ofTexture& mask) {
 	maskedBlur(src, mask, srcBlur);
 	maskedBlurNormalizedSrc(dst, mask, dstBlur);
 
-	//buffer.begin();
 	//renderer->bind(debug);
 	//debug.setUniformTexture("tex", dst, 1);
 	//renderer->draw(dst, 0, 0, 0, 1280, 720, 0, 0, 1280, 720);
