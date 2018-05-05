@@ -122,9 +122,11 @@ void OpenFrameworksTOP::updateParameters(OP_Inputs* inputs) {
 	const OP_TOPInput *topInput = inputs->getInputTOP(0);
 	bool toggleBackground = inputs->getParInt("Background");
 	bool toggleBlur = inputs->getParInt("Blur");
+	bool toggleActive = inputs->getParInt("Active");
 
 	touchParms.toggleBackground = toggleBackground;
 	touchParms.toggleBlur = toggleBlur;
+	touchParms.toggleActive = toggleActive;
 }
 
 void OpenFrameworksTOP::setTexturesFromInput(OP_Inputs* inputs) {
@@ -159,36 +161,40 @@ void
 OpenFrameworksTOP::execute(const TOP_OutputFormatSpecs* outputFormat,
 	OP_Inputs* inputs,
 	TOP_Context *context)
+
 {
+		updateParameters(inputs);
+		if (touchParms.toggleActive) {
+			setTexturesFromInput(inputs);
+			int width = outputFormat->width;
+			int height = outputFormat->height;
 
-	int width = outputFormat->width;
-	int height = outputFormat->height;
-	setTexturesFromInput(inputs);
-	updateParameters(inputs);
+		// Use the first input TOP (here we assume it exists but in reality it might not)
 
-	// Use the first input TOP (here we assume it exists but in reality it might not)
+		// Need to use a ofAppNoWindow so that openFrameworks doesn't create a conflicting
+		// OpenGL context. We want to use TouchDesigner's context in ::execute
+		ofSetupOpenGL(&myWindow, width, height, OF_WINDOW);
 
-	// Need to use a ofAppNoWindow so that openFrameworks doesn't create a conflicting
-	// OpenGL context. We want to use TouchDesigner's context in ::execute
-	ofSetupOpenGL(&myWindow, width, height, OF_WINDOW);
+		context->beginGLCommands();
+		if (!isSetup)
+		{
+			setup();
+		}
+		faceTracker.update(bgTexture, touchParms);
+		texture = faceTracker.getTexture();
 
-	context->beginGLCommands();
-	if (!isSetup)
-	{
-		setup();
+		glBindFramebuffer(GL_FRAMEBUFFER, context->getFBOIndex());
+		begin();
+
+		renderer->draw(texture, 0, 0, 0, 1280, 720, 0, 0, 1280, 720);
+
+		end();
+
+		context->endGLCommands();
+
+
 	}
-	faceTracker.update(bgTexture, touchParms);
-	texture = faceTracker.getTexture();
 
-	glBindFramebuffer(GL_FRAMEBUFFER, context->getFBOIndex());
-
-	begin();
-
-	renderer->draw(texture, 0, 0, 0, 1280, 720, 0, 0, 1280, 720);
-
-	end();
-
-	context->endGLCommands();
 }
 
 void
@@ -199,15 +205,20 @@ OpenFrameworksTOP::setupParameters(OP_ParameterManager* manager)
 	np.name = "Background";
 	np.label = "Background";
 
-	ParAppendResult res = manager->appendToggle(np);
-	assert(res == PARAMETER_APPEND_SUCCESS);
 
 	OP_NumericParameter	np2;
 	np2.name = "Blur";
 	np2.label = "Blur Subject";
 
+	OP_NumericParameter	np3;
+	np3.name = "Active";
+	np3.label = "Tracking Active";
+
+	ParAppendResult res3 = manager->appendToggle(np3);
+	ParAppendResult res = manager->appendToggle(np);
 	ParAppendResult res2 = manager->appendToggle(np2);
 	assert(res == PARAMETER_APPEND_SUCCESS);
 	assert(res2 == PARAMETER_APPEND_SUCCESS);
+	assert(res3 == PARAMETER_APPEND_SUCCESS);
 
 }

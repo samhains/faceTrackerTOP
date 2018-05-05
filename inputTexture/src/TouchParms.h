@@ -6,4 +6,5 @@ class TouchParms {
 		TouchParms::TouchParms();
 		bool toggleBackground;
 		bool toggleBlur;
+		bool toggleActive;
 };
