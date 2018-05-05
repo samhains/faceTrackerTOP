@@ -123,10 +123,12 @@ void OpenFrameworksTOP::updateParameters(OP_Inputs* inputs) {
 	bool toggleBackground = inputs->getParInt("Background");
 	bool toggleBlur = inputs->getParInt("Blur");
 	bool toggleActive = inputs->getParInt("Active");
+	bool pulseReload = inputs->getParInt("Reload");
 
 	touchParms.toggleBackground = toggleBackground;
 	touchParms.toggleBlur = toggleBlur;
 	touchParms.toggleActive = toggleActive;
+	touchParms.pulseReload = pulseReload;
 }
 
 void OpenFrameworksTOP::setTexturesFromInput(OP_Inputs* inputs) {
@@ -180,7 +182,7 @@ OpenFrameworksTOP::execute(const TOP_OutputFormatSpecs* outputFormat,
 		{
 			setup();
 		}
-		faceTracker.update(bgTexture, touchParms);
+		faceTracker.update(bgTexture, touchParms, faceTexture);
 		texture = faceTracker.getTexture();
 
 		glBindFramebuffer(GL_FRAMEBUFFER, context->getFBOIndex());
@@ -214,11 +216,17 @@ OpenFrameworksTOP::setupParameters(OP_ParameterManager* manager)
 	np3.name = "Active";
 	np3.label = "Tracking Active";
 
+	OP_NumericParameter	np4;
+	np4.name = "Reload";
+	np4.label = "Reload Face";
+
 	ParAppendResult res3 = manager->appendToggle(np3);
 	ParAppendResult res = manager->appendToggle(np);
 	ParAppendResult res2 = manager->appendToggle(np2);
+	ParAppendResult res4 = manager->appendToggle(np4);
 	assert(res == PARAMETER_APPEND_SUCCESS);
 	assert(res2 == PARAMETER_APPEND_SUCCESS);
 	assert(res3 == PARAMETER_APPEND_SUCCESS);
+	assert(res4 == PARAMETER_APPEND_SUCCESS);
 
 }

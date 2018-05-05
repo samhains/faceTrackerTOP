@@ -11,7 +11,7 @@ public:
 	ofTexture texture;
 	ofTexture MultiFaceTracker::getTexture();
 	void setup(ofFbo::Settings _settings, shared_ptr<ofGLProgrammableRenderer> _renderer, ofTexture _faceTexture);
-	void update(ofTexture bgTexture, TouchParms touchParms);
+	void update(ofTexture bgTexture, TouchParms touchParms, ofTexture _faceTexture);
 	void stop();
 	ofTexture faceTexture;
 private:

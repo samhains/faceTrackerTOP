@@ -16,7 +16,11 @@ void MultiFaceTracker::setup(ofFbo::Settings _settings, shared_ptr<ofGLProgramma
 	loadFace();
 
 }
-void MultiFaceTracker::update(ofTexture bgTexture, TouchParms touchParms) {;
+void MultiFaceTracker::update(ofTexture bgTexture, TouchParms touchParms, ofTexture _faceTexture) {;
+	if (touchParms.pulseReload) {
+		faceTexture = _faceTexture;
+		loadFace();
+	}
 
 	if (faceDetected) {
 
@@ -85,7 +89,6 @@ void MultiFaceTracker::stop() {
 
 void MultiFaceTracker::loadFace() {
 	// how to load toCv compatible from texture instead of string
-
 	ofPixels facePixels;
 	faceTexture.readToPixels(facePixels);
 	facePixels.mirror(true, false);

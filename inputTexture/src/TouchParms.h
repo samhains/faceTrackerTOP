@@ -7,4 +7,5 @@ class TouchParms {
 		bool toggleBackground;
 		bool toggleBlur;
 		bool toggleActive;
+		bool pulseReload;
 };
