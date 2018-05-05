@@ -2,7 +2,6 @@
 
 using namespace ofxCv;
 
-
 void MultiFaceTracker::setup(ofFbo::Settings _settings, shared_ptr<ofGLProgrammableRenderer> _renderer, ofTexture _faceTexture) {
 	settings = _settings;
 	renderer = _renderer;
@@ -17,54 +16,62 @@ void MultiFaceTracker::setup(ofFbo::Settings _settings, shared_ptr<ofGLProgramma
 	loadFace();
 
 }
-void MultiFaceTracker::update(ofTexture bgTexture) {;
-if (faceDetected) {
+void MultiFaceTracker::update(ofTexture bgTexture, TouchParms touchParms) {;
 
-	ofPixels pixels;
-	bgTexture.readToPixels(pixels);
-	pixels.mirror(true, false);
+	if (faceDetected) {
 
-	targetTracker.update(toCv(pixels));
+		ofPixels pixels;
+		bgTexture.readToPixels(pixels);
+		pixels.mirror(true, false);
 
-	vector<ofxFaceTracker2Instance> instances = targetTracker.getInstances();
-	vector<vector<ofVec2f>> targetPointsArr(instances.size());
-	ofDisableArbTex();
-	maskFbo.begin();
-	renderer->clear(0, 255);
-	for (int i = 0; i < instances.size(); i++) {
-		ofxFaceTracker2Instance camTarget = instances[i];
-		std::vector<ofVec2f> targetPoints = camTarget.getLandmarks().getImagePoints();
-		targetPointsArr[i] = targetPoints;
-		targetMesh.update_vertices(targetPointsArr[i]);
-		targetMesh.update_uvs(srcPoints);
-		renderer->draw(targetMesh, OF_MESH_FILL);
+		targetTracker.update(toCv(pixels));
+
+		vector<ofxFaceTracker2Instance> instances = targetTracker.getInstances();
+		vector<vector<ofVec2f>> targetPointsArr(instances.size());
+		ofDisableArbTex();
+		maskFbo.begin();
+		renderer->clear(0, 255);
+		for (int i = 0; i < instances.size(); i++) {
+			ofxFaceTracker2Instance camTarget = instances[i];
+			std::vector<ofVec2f> targetPoints = camTarget.getLandmarks().getImagePoints();
+			targetPointsArr[i] = targetPoints;
+			targetMesh.update_vertices(targetPointsArr[i]);
+			targetMesh.update_uvs(srcPoints);
+			renderer->draw(targetMesh, OF_MESH_FILL);
+		}
+		maskFbo.end();
+
+		srcFbo.begin();
+		renderer->clear(0, 255);
+
+		for (int i = 0; i < instances.size(); i++) {
+			renderer->bind(faceTexture, 0);
+			ofxFaceTracker2Instance camTarget = instances[i];
+			std::vector<ofVec2f> targetPoints = camTarget.getLandmarks().getImagePoints();
+			targetPointsArr[i] = targetPoints;
+			targetMesh.update_vertices(targetPointsArr[i]);
+			targetMesh.update_uvs(srcPoints);
+			renderer->draw(targetMesh, OF_MESH_FILL);
+			renderer->unbind(faceTexture, 0);
+		}
+		srcFbo.end();
+
+		if (touchParms.toggleBackground) {
+			clone.setStrength(14);
+			clone.update(srcFbo.getTextureReference(), bgTexture, maskFbo.getTextureReference(), touchParms);
+		}
+		else {
+			clone.update(srcFbo.getTextureReference(), maskFbo.getTextureReference());
+
+		}
+
+		texture = clone.getTexture();
+
 	}
-	maskFbo.end();
+	else {
 
-	srcFbo.begin();
-	renderer->clear(0, 255);
-
-	for (int i = 0; i < instances.size(); i++) {
-		renderer->bind(faceTexture, 0);
-		ofxFaceTracker2Instance camTarget = instances[i];
-		std::vector<ofVec2f> targetPoints = camTarget.getLandmarks().getImagePoints();
-		targetPointsArr[i] = targetPoints;
-		targetMesh.update_vertices(targetPointsArr[i]);
-		targetMesh.update_uvs(srcPoints);
-		renderer->draw(targetMesh, OF_MESH_FILL);
-		renderer->unbind(faceTexture, 0);
+		texture = bgTexture;
 	}
-	srcFbo.end();
-
-
-	clone.setStrength(14);
-	clone.update(srcFbo.getTextureReference(), bgTexture, maskFbo.getTextureReference());
-	texture = clone.getTexture();
-}
-else {
-
-	texture = bgTexture;
-}
 
 }
 
@@ -90,7 +97,6 @@ void MultiFaceTracker::loadFace() {
 		srcTracker.update(toCv(facePixels));
 
 		vector<ofxFaceTracker2Instance>  instances = srcTracker.getInstances();
-		ofLog(OF_LOG_NOTICE, ofToString(instances.size()));
 
 		if (instances.size() > 0) {
 			ofxFaceTracker2Instance instance = instances[0];

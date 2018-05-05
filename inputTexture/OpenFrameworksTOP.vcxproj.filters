@@ -59,6 +59,9 @@
     <ClCompile Include="src\MultiFaceTracker.cpp">
       <Filter>src</Filter>
     </ClCompile>
+    <ClCompile Include="src\TouchParms.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="CPlusPlus_Common.h" />
@@ -104,6 +107,9 @@
     <ClInclude Include="src\MultiFaceTracker.h">
       <Filter>src</Filter>
     </ClInclude>
+    <ClInclude Include="src\TouchParms.h">
+      <Filter>src</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="icon.rc" />
@@ -127,11 +133,11 @@
     <Filter Include="shaders\maskBlur2">
       <UniqueIdentifier>{4c6e6aca-504b-474e-9f8d-f519fd37ee27}</UniqueIdentifier>
     </Filter>
-    <Filter Include="shaders\debug">
-      <UniqueIdentifier>{9a06a4f1-361b-40c3-bf3f-0912e86fb4f2}</UniqueIdentifier>
-    </Filter>
     <Filter Include="shaders\simpleMask">
       <UniqueIdentifier>{7eec72c5-a6b2-4a01-905b-a03620258049}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="shaders\simpleMaskNoBg">
+      <UniqueIdentifier>{3d2d2060-89d2-4ada-b2dd-97892c4a5d82}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -163,6 +169,12 @@
     </None>
     <None Include="bin\data\simpleMask\shader.vert">
       <Filter>shaders\simpleMask</Filter>
+    </None>
+    <None Include="bin\data\simpleMaskNoBg\shader.frag">
+      <Filter>shaders\simpleMaskNoBg</Filter>
+    </None>
+    <None Include="bin\data\simpleMaskNoBg\shader.vert">
+      <Filter>shaders\simpleMaskNoBg</Filter>
     </None>
   </ItemGroup>
 </Project>

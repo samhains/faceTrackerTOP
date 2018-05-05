@@ -117,9 +117,20 @@ OpenFrameworksTOP::end()
 	renderer->popMatrix();
 	renderer->finishRender();
 }
+void OpenFrameworksTOP::updateParameters(OP_Inputs* inputs) {
+
+	const OP_TOPInput *topInput = inputs->getInputTOP(0);
+	bool toggleBackground = inputs->getParInt("Background");
+	bool toggleBlur = inputs->getParInt("Blur");
+
+	touchParms.toggleBackground = toggleBackground;
+	touchParms.toggleBlur = toggleBlur;
+}
+
 void OpenFrameworksTOP::setTexturesFromInput(OP_Inputs* inputs) {
 
 	const OP_TOPInput *topInput = inputs->getInputTOP(0);
+
 	bgTexture.setUseExternalTextureID(topInput->textureIndex);
 	bgTexture.texData.width = topInput->width;
 	bgTexture.texData.height = topInput->height;
@@ -129,7 +140,6 @@ void OpenFrameworksTOP::setTexturesFromInput(OP_Inputs* inputs) {
 	bgTexture.texData.tex_u = 1.0f;
 	bgTexture.texData.textureTarget = topInput->textureType;
 	bgTexture.texData.bFlipTexture = true;
-	ofTexture texture3;
 
 	const OP_TOPInput *topInput2 = inputs->getInputTOP(1);
 	faceTexture.setUseExternalTextureID(topInput2->textureIndex);
@@ -154,6 +164,7 @@ OpenFrameworksTOP::execute(const TOP_OutputFormatSpecs* outputFormat,
 	int width = outputFormat->width;
 	int height = outputFormat->height;
 	setTexturesFromInput(inputs);
+	updateParameters(inputs);
 
 	// Use the first input TOP (here we assume it exists but in reality it might not)
 
@@ -166,7 +177,7 @@ OpenFrameworksTOP::execute(const TOP_OutputFormatSpecs* outputFormat,
 	{
 		setup();
 	}
-	faceTracker.update(bgTexture);
+	faceTracker.update(bgTexture, touchParms);
 	texture = faceTracker.getTexture();
 
 	glBindFramebuffer(GL_FRAMEBUFFER, context->getFBOIndex());
@@ -185,11 +196,18 @@ OpenFrameworksTOP::setupParameters(OP_ParameterManager* manager)
 {
 
 	OP_NumericParameter	np;
+	np.name = "Background";
+	np.label = "Background";
 
-	np.name = "Translation";
-	np.label = "Translation";
-
-	ParAppendResult res = manager->appendFloat(np);
+	ParAppendResult res = manager->appendToggle(np);
 	assert(res == PARAMETER_APPEND_SUCCESS);
+
+	OP_NumericParameter	np2;
+	np2.name = "Blur";
+	np2.label = "Blur Subject";
+
+	ParAppendResult res2 = manager->appendToggle(np2);
+	assert(res == PARAMETER_APPEND_SUCCESS);
+	assert(res2 == PARAMETER_APPEND_SUCCESS);
 
 }

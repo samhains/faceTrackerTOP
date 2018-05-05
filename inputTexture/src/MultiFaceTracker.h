@@ -2,21 +2,21 @@
 #include "ofMain.h"
 #include "ofxCv.h"
 #include "Clone.h"
-#include "Coord.h"
 #include "TargetMesh.h"
 #include "ofxFaceTracker2.h"
+#include "TouchParms.h"
 
 class MultiFaceTracker {
 public:
 	ofTexture texture;
 	ofTexture MultiFaceTracker::getTexture();
 	void setup(ofFbo::Settings _settings, shared_ptr<ofGLProgrammableRenderer> _renderer, ofTexture _faceTexture);
-	void update(ofTexture bgTexture);
+	void update(ofTexture bgTexture, TouchParms touchParms);
 	void stop();
 	ofTexture faceTexture;
 private:
 	void loadFace();
-	bool faceDetected = false;
+	bool faceDetected;
 	ofImage bgImg;
 	ofImage faceAlphaImg;
 	ofFbo::Settings settings;

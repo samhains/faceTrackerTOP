@@ -215,6 +215,7 @@
     <ClInclude Include="OpenFrameworksTOP.h" />
     <ClInclude Include="src\Clone.h" />
     <ClInclude Include="src\Coord.h" />
+    <ClInclude Include="src\TouchParms.h" />
     <ClInclude Include="src\MultiFaceTracker.h" />
     <ClInclude Include="src\TargetMesh.h" />
     <ClInclude Include="TOP_CPlusPlusBase.h" />
@@ -240,6 +241,7 @@
     <ClCompile Include="src\Clone.cpp" />
     <ClCompile Include="src\MultiFaceTracker.cpp" />
     <ClCompile Include="src\TargetMesh.cpp" />
+    <ClCompile Include="src\TouchParms.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Text Include="Notes.txt" />
@@ -251,6 +253,8 @@
     <None Include="bin\data\maskBlur2\shader.vert" />
     <None Include="bin\data\maskBlur\shader.frag" />
     <None Include="bin\data\maskBlur\shader.vert" />
+    <None Include="bin\data\simpleMaskNoBg\shader.frag" />
+    <None Include="bin\data\simpleMaskNoBg\shader.vert" />
     <None Include="bin\data\simpleMask\shader.frag" />
     <None Include="bin\data\simpleMask\shader.vert" />
   </ItemGroup>

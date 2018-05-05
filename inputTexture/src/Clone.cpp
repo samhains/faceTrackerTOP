@@ -9,13 +9,13 @@ void Clone::setup(int width, int height, ofFbo::Settings settings, shared_ptr<of
 	maskBlurShader.load("maskBlur/shader");
 	maskBlurShader2.load("maskBlur2/shader");
 	simpleMaskShader.load("simpleMask/shader");
+	simpleMaskNoBgShader.load("simpleMaskNoBg/shader");
 	cloneShader.load("cloneShader/shader");
 	
 	strength = 0;
 }
 
 void Clone::simpleMask(ofTexture& tex, ofTexture& mask, ofTexture& dst) {
-	
 	buffer.begin();
 	renderer->pushStyle();
 	renderer->setBlendMode(OF_BLENDMODE_ALPHA);
@@ -28,8 +28,8 @@ void Clone::simpleMask(ofTexture& tex, ofTexture& mask, ofTexture& dst) {
 	renderer->setBlendMode(OF_BLENDMODE_DISABLED);
 	renderer->popStyle();
 	buffer.end();
-	
 }
+
 void Clone::maskedBlur(ofTexture& tex, ofTexture& mask, ofFbo& result) {
 	int k = strength;
 	
@@ -85,10 +85,8 @@ void Clone::setStrength(int strength) {
 	this->strength = strength;
 }
 
-void Clone::update(ofTexture& src, ofTexture& dst, ofTexture& mask) {
-	//maskedBlur(src, mask, srcBlur);
-	//maskedBlurNormalizedSrc(dst, mask, dstBlur);
-	if (toggleBlur) {
+void Clone::update(ofTexture& src, ofTexture& dst, ofTexture& mask, TouchParms touchParms) {
+	if (touchParms.toggleBlur) {
 		maskedBlur(src, mask, srcBlur);
 		maskedBlurNormalizedSrc(dst, mask, dstBlur);
 	}
@@ -109,6 +107,23 @@ void Clone::update(ofTexture& src, ofTexture& dst, ofTexture& mask) {
 	renderer->setBlendMode(OF_BLENDMODE_DISABLED);
 	renderer->popStyle();
 	buffer.end();
+}
+
+void Clone::update(ofTexture& tex, ofTexture& mask) {
+	
+	buffer.begin();
+	renderer->clear(0, 255);
+	renderer->pushStyle();
+	renderer->setBlendMode(OF_BLENDMODE_ALPHA);
+	renderer->bind(simpleMaskNoBgShader);
+	simpleMaskNoBgShader.setUniformTexture("src", tex, 1);
+	simpleMaskNoBgShader.setUniformTexture("mask", mask, 2);
+	renderer->draw(tex, 0, 0, 0, 1280, 720, 0, 0, 1280, 720);
+	renderer->unbind(simpleMaskNoBgShader);
+	renderer->setBlendMode(OF_BLENDMODE_DISABLED);
+	renderer->popStyle();
+	buffer.end();
+	
 }
 
 ofTexture Clone::getTexture() {
