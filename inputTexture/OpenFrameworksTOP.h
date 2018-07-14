@@ -2,6 +2,7 @@
 #include "ofAppNoWindow.h"
 #include "TOP_CPlusPlusBase.h"
 #include "MultiFaceTracker.h"
+#include "src/TouchParms.h"
 
 class OpenFrameworksTOP : public TOP_CPlusPlusBase
 {
@@ -21,9 +22,15 @@ public:
 								TOP_Context *context) override;
 
 	virtual void 		setupParameters(OP_ParameterManager* manager) override;
+	TouchParms touchParms;
 
+	void setTexturesFromInput(OP_Inputs* inputs);
+	void updateParameters(OP_Inputs* inputs);
 private:
 
+	ofTexture bgTexture;
+	ofTexture faceTexture;
+	ofTexture texture;
 	void				begin();
 	void				end();
 

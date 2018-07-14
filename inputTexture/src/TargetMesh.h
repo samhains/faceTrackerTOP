@@ -15,5 +15,5 @@ class TargetMesh : public ofMesh {
         void update_vertices(const std::vector<ofVec2f> &points);
         void update_uvs(const std::vector<ofVec2f> &points);
         int framesUnseen;
-        void render();
+		ofVec2f normalizedCoord;
 };

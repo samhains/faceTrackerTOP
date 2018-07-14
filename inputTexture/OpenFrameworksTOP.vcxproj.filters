@@ -59,6 +59,9 @@
     <ClCompile Include="src\MultiFaceTracker.cpp">
       <Filter>src</Filter>
     </ClCompile>
+    <ClCompile Include="src\TouchParms.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="CPlusPlus_Common.h" />
@@ -104,6 +107,9 @@
     <ClInclude Include="src\MultiFaceTracker.h">
       <Filter>src</Filter>
     </ClInclude>
+    <ClInclude Include="src\TouchParms.h">
+      <Filter>src</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="icon.rc" />
@@ -118,11 +124,20 @@
     <Filter Include="shaders">
       <UniqueIdentifier>{fa2fb6eb-323a-46bf-9b46-c2bbea4b73eb}</UniqueIdentifier>
     </Filter>
+    <Filter Include="shaders\cloneMask">
+      <UniqueIdentifier>{7bd38faf-7fb5-4026-84c1-f908e1904b96}</UniqueIdentifier>
+    </Filter>
     <Filter Include="shaders\maskBlur">
       <UniqueIdentifier>{0082b398-d5a9-4de5-a234-f1c477787f68}</UniqueIdentifier>
     </Filter>
-    <Filter Include="shaders\cloneMask">
-      <UniqueIdentifier>{7bd38faf-7fb5-4026-84c1-f908e1904b96}</UniqueIdentifier>
+    <Filter Include="shaders\maskBlur2">
+      <UniqueIdentifier>{4c6e6aca-504b-474e-9f8d-f519fd37ee27}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="shaders\simpleMask">
+      <UniqueIdentifier>{7eec72c5-a6b2-4a01-905b-a03620258049}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="shaders\simpleMaskNoBg">
+      <UniqueIdentifier>{3d2d2060-89d2-4ada-b2dd-97892c4a5d82}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -142,6 +157,24 @@
     </None>
     <None Include="bin\data\maskBlur\shader.vert">
       <Filter>shaders\maskBlur</Filter>
+    </None>
+    <None Include="bin\data\maskBlur2\shader.vert">
+      <Filter>shaders\maskBlur2</Filter>
+    </None>
+    <None Include="bin\data\maskBlur2\shader.frag">
+      <Filter>shaders\maskBlur2</Filter>
+    </None>
+    <None Include="bin\data\simpleMask\shader.frag">
+      <Filter>shaders\simpleMask</Filter>
+    </None>
+    <None Include="bin\data\simpleMask\shader.vert">
+      <Filter>shaders\simpleMask</Filter>
+    </None>
+    <None Include="bin\data\simpleMaskNoBg\shader.frag">
+      <Filter>shaders\simpleMaskNoBg</Filter>
+    </None>
+    <None Include="bin\data\simpleMaskNoBg\shader.vert">
+      <Filter>shaders\simpleMaskNoBg</Filter>
     </None>
   </ItemGroup>
 </Project>

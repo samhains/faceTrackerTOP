@@ -2,41 +2,37 @@
 
 using namespace ofxCv;
 
-
-void MultiFaceTracker::setup(ofFbo::Settings _settings, shared_ptr<ofGLProgrammableRenderer> _renderer) {
+void MultiFaceTracker::setup(ofFbo::Settings _settings, shared_ptr<ofGLProgrammableRenderer> _renderer, ofTexture _faceTexture) {
 	settings = _settings;
 	renderer = _renderer;
+	faceTexture = _faceTexture;
 	//ofSetVerticalSync(true);
 	clone.setup(1280, 720, settings, renderer);
-	targetVideoPlayer.load("movies/cut.mp4");
-	targetVideoPlayer.play();
-	targetVideoPlayer.setVolume(0);
-
 	targetTracker.setup();
 	srcTracker.setup();
 	maskFbo.allocate(settings);
 	srcFbo.allocate(settings);
-
-	//faces.allowExt("jpg");
-	//faces.allowExt("png");
-	//faces.listDir("faces");
-	loadFace("faces/src.jpg");
-	//if (faces.size() != 0) {
-
-	//	loadFace(faces.getPath(0));
-	//}
+	simpleFbo.allocate(settings);
+	loadFace();
 
 }
-void MultiFaceTracker::update() {;
-if (src.isAllocated()) {
+void MultiFaceTracker::update(ofTexture bgTexture, TouchParms touchParms, ofTexture _faceTexture) {;
+	if (touchParms.pulseReload) {
+		faceTexture = _faceTexture;
+		loadFace();
+	}
 
-	targetVideoPlayer.update();
+	if (faceDetected) {
 
-	if (targetVideoPlayer.isFrameNew()) {
-		targetTracker.update(toCv(targetVideoPlayer));
+		ofPixels pixels;
+		bgTexture.readToPixels(pixels);
+		pixels.mirror(true, false);
+
+		targetTracker.update(toCv(pixels));
 
 		vector<ofxFaceTracker2Instance> instances = targetTracker.getInstances();
 		vector<vector<ofVec2f>> targetPointsArr(instances.size());
+		ofDisableArbTex();
 		maskFbo.begin();
 		renderer->clear(0, 255);
 		for (int i = 0; i < instances.size(); i++) {
@@ -53,32 +49,33 @@ if (src.isAllocated()) {
 		renderer->clear(0, 255);
 
 		for (int i = 0; i < instances.size(); i++) {
-			renderer->bind(src.getTexture(), 0);
+			renderer->bind(faceTexture, 0);
 			ofxFaceTracker2Instance camTarget = instances[i];
 			std::vector<ofVec2f> targetPoints = camTarget.getLandmarks().getImagePoints();
 			targetPointsArr[i] = targetPoints;
 			targetMesh.update_vertices(targetPointsArr[i]);
 			targetMesh.update_uvs(srcPoints);
-			renderer->draw(targetMesh,OF_MESH_FILL);
-			renderer->unbind(src.getTexture(), 0);
+			renderer->draw(targetMesh, OF_MESH_FILL);
+			renderer->unbind(faceTexture, 0);
 		}
 		srcFbo.end();
 
-		clone.setStrength(16);
-		clone.update(srcFbo.getTextureReference(), targetVideoPlayer.getTextureReference(), maskFbo.getTextureReference());
-	}
+		if (touchParms.toggleBackground) {
+			clone.setStrength(14);
+			clone.update(srcFbo.getTextureReference(), bgTexture, maskFbo.getTextureReference(), touchParms);
+		}
+		else {
+			clone.update(srcFbo.getTextureReference(), maskFbo.getTextureReference());
 
+		}
 
-	if (src.getWidth() > 0) {
 		texture = clone.getTexture();
+
 	}
 	else {
-		texture = targetVideoPlayer.getTexture();
+
+		texture = bgTexture;
 	}
-}
-else {
-	std::cout << "NOT ALLOCATEED\n";
-}
 
 }
 
@@ -90,14 +87,17 @@ void MultiFaceTracker::stop() {
 	targetTracker.stop();
 }
 
-void MultiFaceTracker::loadFace(string face) {
+void MultiFaceTracker::loadFace() {
+	// how to load toCv compatible from texture instead of string
+	ofPixels facePixels;
+	faceTexture.readToPixels(facePixels);
+	facePixels.mirror(true, false);
 
-	src.load(face);
 
-	if (src.getWidth() > 0) {
-		srcTracker.update(toCv(src));
+	if (facePixels.getWidth() > 0) {
+		srcTracker.update(toCv(facePixels));
 		Sleep(1000);
-		srcTracker.update(toCv(src));
+		srcTracker.update(toCv(facePixels));
 
 		vector<ofxFaceTracker2Instance>  instances = srcTracker.getInstances();
 
@@ -105,10 +105,11 @@ void MultiFaceTracker::loadFace(string face) {
 			ofxFaceTracker2Instance instance = instances[0];
 			srcPoints = instance.getLandmarks().getImagePoints();
 			targetMesh.update_uvs(srcPoints);
+			faceDetected = true;
+		}
+		else {
+			std::cout << "NOT ALLOCATEED\n";
+
 		}
 	}
-	else {
-		std::cout << "NOT ALLOCATEED\n";
-	}
 }
-

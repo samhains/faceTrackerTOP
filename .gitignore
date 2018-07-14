@@ -1,7 +1,13 @@
+Backup
+*.dmp
 .vs
+*.mp4
+*.mov
 inputTexture/obj/*
 obj/*
 *.obj
 *.tlog
 *.dll
 Backup
+CrashAutoSave.toe
+/inputTexture.44.toe

@@ -64,6 +64,7 @@ OpenFrameworksTOP::~OpenFrameworksTOP()
 	faceTracker.stop();
 	//delete renderer;
 }
+
 void OpenFrameworksTOP::setup()
 {
 	glewInit();
@@ -77,7 +78,7 @@ void OpenFrameworksTOP::setup()
 	settings.height = 720;
 	settings.numSamples = 0;
 	settings.internalformat = GL_RGBA;
-	faceTracker.setup(settings, renderer);
+	faceTracker.setup(settings, renderer, faceTexture);
 
 
 	isSetup = true;
@@ -116,51 +117,86 @@ OpenFrameworksTOP::end()
 	renderer->popMatrix();
 	renderer->finishRender();
 }
+void OpenFrameworksTOP::updateParameters(OP_Inputs* inputs) {
+
+	const OP_TOPInput *topInput = inputs->getInputTOP(0);
+	bool toggleBackground = inputs->getParInt("Background");
+	bool toggleBlur = inputs->getParInt("Blur");
+	bool toggleActive = inputs->getParInt("Active");
+	bool pulseReload = inputs->getParInt("Reload");
+
+	touchParms.toggleBackground = toggleBackground;
+	touchParms.toggleBlur = toggleBlur;
+	touchParms.toggleActive = toggleActive;
+	touchParms.pulseReload = pulseReload;
+}
+
+void OpenFrameworksTOP::setTexturesFromInput(OP_Inputs* inputs) {
+
+	const OP_TOPInput *topInput = inputs->getInputTOP(0);
+
+	bgTexture.setUseExternalTextureID(topInput->textureIndex);
+	bgTexture.texData.width = topInput->width;
+	bgTexture.texData.height = topInput->height;
+	bgTexture.texData.tex_w = topInput->width;
+	bgTexture.texData.tex_h = topInput->height;
+	bgTexture.texData.tex_t = 1.0f;
+	bgTexture.texData.tex_u = 1.0f;
+	bgTexture.texData.textureTarget = topInput->textureType;
+	bgTexture.texData.bFlipTexture = true;
+
+	const OP_TOPInput *topInput2 = inputs->getInputTOP(1);
+	faceTexture.setUseExternalTextureID(topInput2->textureIndex);
+	faceTexture.texData.width = topInput2->width;
+	faceTexture.texData.height = topInput2->height;
+	faceTexture.texData.tex_w = topInput2->width;
+	faceTexture.texData.tex_h = topInput2->height;
+	faceTexture.texData.tex_t = 1.0f;
+	faceTexture.texData.tex_u = 1.0f;
+	faceTexture.texData.textureTarget = topInput2->textureType;
+	faceTexture.texData.bFlipTexture = true;
+
+
+}
 
 void
 OpenFrameworksTOP::execute(const TOP_OutputFormatSpecs* outputFormat,
 	OP_Inputs* inputs,
 	TOP_Context *context)
+
 {
-	double xPos = inputs->getParDouble("Translation");
+		updateParameters(inputs);
+		if (touchParms.toggleActive) {
+			setTexturesFromInput(inputs);
+			int width = outputFormat->width;
+			int height = outputFormat->height;
 
-	int width = outputFormat->width;
-	int height = outputFormat->height;
+		// Use the first input TOP (here we assume it exists but in reality it might not)
 
-	// Use the first input TOP (here we assume it exists but in reality it might not)
-	const OP_TOPInput *topInput = inputs->getInputTOP(0);
-	ofTexture texture;
-	texture.setUseExternalTextureID(topInput->textureIndex);
-	texture.texData.width = topInput->width;
-	texture.texData.height = topInput->height;
-	texture.texData.tex_w = topInput->width;
-	texture.texData.tex_h = topInput->height;
-	texture.texData.tex_t = 1.0f;
-	texture.texData.tex_u = 1.0f;
-	texture.texData.textureTarget = topInput->textureType;
-	texture.texData.bFlipTexture = true;
+		// Need to use a ofAppNoWindow so that openFrameworks doesn't create a conflicting
+		// OpenGL context. We want to use TouchDesigner's context in ::execute
+		ofSetupOpenGL(&myWindow, width, height, OF_WINDOW);
 
-	// Need to use a ofAppNoWindow so that openFrameworks doesn't create a conflicting
-	// OpenGL context. We want to use TouchDesigner's context in ::execute
-	ofSetupOpenGL(&myWindow, width, height, OF_WINDOW);
+		context->beginGLCommands();
+		if (!isSetup)
+		{
+			setup();
+		}
+		faceTracker.update(bgTexture, touchParms, faceTexture);
+		texture = faceTracker.getTexture();
 
-	context->beginGLCommands();
-	if (!isSetup)
-	{
-		setup();
+		glBindFramebuffer(GL_FRAMEBUFFER, context->getFBOIndex());
+		begin();
+
+		renderer->draw(texture, 0, 0, 0, 1280, 720, 0, 0, 1280, 720);
+
+		end();
+
+		context->endGLCommands();
+
+
 	}
-	faceTracker.update();
-	texture = faceTracker.getTexture();
 
-	glBindFramebuffer(GL_FRAMEBUFFER, context->getFBOIndex());
-
-	begin();
-
-	renderer->draw(texture, 0, 0, 0, 1280, 720, 0, 0, 1280, 720);
-
-	end();
-
-	context->endGLCommands();
 }
 
 void
@@ -168,11 +204,29 @@ OpenFrameworksTOP::setupParameters(OP_ParameterManager* manager)
 {
 
 	OP_NumericParameter	np;
+	np.name = "Background";
+	np.label = "Background";
 
-	np.name = "Translation";
-	np.label = "Translation";
 
-	ParAppendResult res = manager->appendFloat(np);
+	OP_NumericParameter	np2;
+	np2.name = "Blur";
+	np2.label = "Blur Subject";
+
+	OP_NumericParameter	np3;
+	np3.name = "Active";
+	np3.label = "Tracking Active";
+
+	OP_NumericParameter	np4;
+	np4.name = "Reload";
+	np4.label = "Reload Face";
+
+	ParAppendResult res3 = manager->appendToggle(np3);
+	ParAppendResult res = manager->appendToggle(np);
+	ParAppendResult res2 = manager->appendToggle(np2);
+	ParAppendResult res4 = manager->appendToggle(np4);
 	assert(res == PARAMETER_APPEND_SUCCESS);
+	assert(res2 == PARAMETER_APPEND_SUCCESS);
+	assert(res3 == PARAMETER_APPEND_SUCCESS);
+	assert(res4 == PARAMETER_APPEND_SUCCESS);
 
 }
